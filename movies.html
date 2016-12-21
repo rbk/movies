@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	
+	<input type="text" id="input">
+	<table>
+		<thead>
+			<tr>
+				<td>Title</td>
+				<td>Image</td>
+				<td>Year</td>
+			</tr>
+		</thead>
+		<tbody id="output">
+			
+		</tbody>
+	</table>
+
+	<pre id="nerdput"></pre>
+<script>
+	
+	const input = document.getElementById('input');
+	const out = document.getElementById('output');
+	const nerdput = document.getElementById('nerdput');
+
+	input.addEventListener('keyup', searchMovies);
+
+	function searchMovies(){
+
+	let html = '';
+	var string = document.getElementById('input').value;
+
+	fetch('http://www.omdbapi.com/?s=' + string).then(function(res){
+		return res.json()
+	}).then(data=>{
+
+		if(data&&data.Search){
+		  data = data.Search;
+		  console.table(data)
+			data.forEach(obj=>{
+				html+=`
+				<tr>
+					<td>${obj.Year}</td>
+					<td>${obj.Title}</td>
+					<td><img width="100" src="${obj.Poster}" alt="" /></td>
+				</tr>
+			`
+		});
+		}
+		out.innerHTML = html;
+		// nerdput.innerHTML = JSON.stringify(data, null, 2);
+		// console.table(obj)
+
+	})
+
+	}
+
+</script>
+</body>
+</html>
